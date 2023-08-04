@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Navigation fragment</title>
+    </head>
+    <body>
+        <nav th:fragment="navigation" class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" th:href="@{/}">WeatherApp</a>
+                <div th:if="${authenticated == null}" class="navbar-nav d-flex flex-row">
+                    <a class="nav-link me-3" th:href="@{/signup}">Sign Up</a>
+                    <a class="nav-link" th:href="@{/signin}">Sign In</a>
+                </div>
+                <div th:unless="${authenticated == null}" class="navbar-nav d-flex flex-row">
+                    <span class="nav-link active me-3" th:text="${user.login}"></span>
+                    <a class="nav-link" th:href="@{/signout}">Logout</a>
+                </div>
+            </div>
+        </nav>
+        <form th:fragment="auth_form" class="w-100 p-3 was-validated" th:action="${action}" method="POST">
+            <div class="w-100 mb-3">
+                <label for="emailInput" class="form-label">Email</label>
+                <input type="email" class="form-control" id="emailInput" name="email" required>
+                <div class="invalid-feedback">Email required.</div>
+            </div>
+            <div class="w-100 mb-3">
+                <label for="passwordInput" class="form-label">Password</label>
+                <input type="password" class="form-control" id="passwordInput" name="password" required>
+            </div>
+            <div class="invalid-feedback">Password required.</div>
+            <div class="d-flex flex-column justify-content-center align-items-center w-100">
+                <button type="submit" class="w-50 btn btn-primary">Submit</button>
+            </div>
+        </form>
+        <form th:fragment="search" class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </body>
+</html>

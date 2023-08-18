@@ -1,6 +1,8 @@
 package ru.klokov.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "locations")
@@ -11,6 +13,7 @@ public class Location {
     private String name;
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
     private Double latitude;
     private Double longitude;
@@ -57,5 +60,16 @@ public class Location {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", user=" + user +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
     }
 }

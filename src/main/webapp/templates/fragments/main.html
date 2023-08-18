@@ -7,12 +7,12 @@
         <nav th:fragment="navigation" class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
                 <a class="navbar-brand" th:href="@{/}">WeatherApp</a>
-                <div th:if="${authenticated == null}" class="navbar-nav d-flex flex-row">
+                <div th:if="${login == null}" class="navbar-nav d-flex flex-row">
                     <a class="nav-link me-3" th:href="@{/signup}">Sign Up</a>
                     <a class="nav-link" th:href="@{/signin}">Sign In</a>
                 </div>
-                <div th:unless="${authenticated == null}" class="navbar-nav d-flex flex-row">
-                    <span class="nav-link active me-3" th:text="${user.login}"></span>
+                <div th:unless="${login == null}" class="navbar-nav d-flex flex-row">
+                    <span class="nav-link active me-3" th:text="${login}"></span>
                     <a class="nav-link" th:href="@{/signout}">Logout</a>
                 </div>
             </div>
@@ -32,9 +32,9 @@
                 <button type="submit" class="w-50 btn btn-primary">Submit</button>
             </div>
         </form>
-        <form th:fragment="search" class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+        <form th:fragment="search" class="d-flex" th:action="@{/search}" method="POST">
+            <input class="form-control me-2" type="text" name="name" placeholder="Location name" aria-label="Search" required>
+            <button class="btn btn-outline-primary" type="submit">Search</button>
         </form>
     </body>
 </html>

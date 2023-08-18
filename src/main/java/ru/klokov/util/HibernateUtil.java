@@ -49,6 +49,7 @@ public class HibernateUtil {
         properties.put(Environment.HBM2DDL_AUTO, "create-drop");
         properties.put(Environment.SHOW_SQL, "true");
         properties.put(Environment.FORMAT_SQL, "true");
+        properties.put(Environment.CONNECTION_PROVIDER, "com.zaxxer.hikari.hibernate.HikariConnectionProvider");
 
         configuration.setProperties(properties);
         return configuration;

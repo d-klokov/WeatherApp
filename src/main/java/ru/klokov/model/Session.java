@@ -1,6 +1,9 @@
 package ru.klokov.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -8,6 +11,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "sessions")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Session {
     @Id
     private String id;
@@ -17,32 +23,4 @@ public class Session {
     private User user;
     @Column(name = "expires_at")
     private LocalDateTime expiresAt;
-
-    public Session() {  }
-
-    public Session(String id, User user, LocalDateTime expiresAt) {
-        this.id = id;
-        this.user = user;
-        this.expiresAt = expiresAt;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public LocalDateTime getExpiresAt() {
-        return expiresAt;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setExpiresAt(LocalDateTime expiresAt) {
-        this.expiresAt = expiresAt;
-    }
 }

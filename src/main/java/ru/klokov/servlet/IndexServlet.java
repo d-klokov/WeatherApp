@@ -11,6 +11,7 @@ import ru.klokov.dao.LocationDAO;
 import ru.klokov.dto.weather.WeatherApiResponse;
 import ru.klokov.dto.weather.WeatherResponse;
 import ru.klokov.exception.SessionExpiredException;
+import ru.klokov.exception.WeatherApiException;
 import ru.klokov.model.Location;
 import ru.klokov.model.Session;
 import ru.klokov.model.User;
@@ -39,11 +40,8 @@ public class IndexServlet extends BaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Cookie sessionCookie = authService.getSessionCookie(req);
-        Session session = authService.getSessionById(sessionCookie.getValue());
+        Session session = authService.getAndValidateSession(req);
         User user = session.getUser();
-
-        if (authService.sessionExpired(session)) throw new SessionExpiredException();
 
         List<Location> locations = locationDAO.findByUser(user);
 
@@ -53,12 +51,14 @@ public class IndexServlet extends BaseServlet {
             weatherResponses = locations.stream().map(location -> {
                 try {
                     WeatherApiResponse weatherApiResponse = weatherService.getWeatherDataByLocation(location);
-                    return weatherService.getWeatherResponse(weatherApiResponse);
+                    WeatherResponse weatherResponse = weatherService.getWeatherResponse(weatherApiResponse);
+                    weatherResponse.setLocationId(location.getId());
+                    System.out.println(weatherResponse);
+                    return weatherResponse;
                 } catch (ExecutionException | InterruptedException | JsonProcessingException e) {
-                    throw new RuntimeException(e);
+                    throw new WeatherApiException(e.getMessage());
                 }
             }).collect(Collectors.toList());
-            System.out.println("Responses: " + weatherResponses);
         }
 
 

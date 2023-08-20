@@ -3,7 +3,6 @@ package ru.klokov.auth;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -73,7 +72,7 @@ public class AuthServiceTest {
 
         authService.signUp(login, password);
 
-        assertThrows(EntityAlreadyExistsException.class, () -> authService.signUp(login, password));
+        assertThrows(LocationAlreadyExistsException.class, () -> authService.signUp(login, password));
     }
 
     @Test

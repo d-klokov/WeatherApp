@@ -17,4 +17,8 @@ public class Main {
     private Integer pressure;
     @JsonProperty("humidity")
     private Integer humidity;
+    @JsonProperty("temp_min")
+    private Double minTemperature;
+    @JsonProperty("temp_max")
+    private Double maxTemperature;
 }

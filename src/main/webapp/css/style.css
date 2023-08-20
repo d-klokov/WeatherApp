@@ -4,10 +4,6 @@
 	border: none;
 }
 
-article {
-    height: calc(100vh - 56px);
-}
-
 .form-container {
     background: #eee;
 }

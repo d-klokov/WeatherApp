@@ -8,10 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import org.thymeleaf.context.WebContext;
 import ru.klokov.dao.SessionDAO;
 import ru.klokov.dao.UserDAO;
-import ru.klokov.exception.CookiesNotFoundException;
-import ru.klokov.exception.EntityNotFoundException;
-import ru.klokov.exception.PasswordsNotMatchException;
-import ru.klokov.exception.SessionNotFoundException;
+import ru.klokov.exception.*;
 import ru.klokov.model.Session;
 import ru.klokov.model.User;
 import ru.klokov.util.ValidatorUtil;
@@ -52,16 +49,8 @@ public class AuthService {
     }
 
     public void signOut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-//        Optional<Cookie> cookieOpt = getSessionCookie(req);
-//        if (cookieOpt.isPresent()) {
-//            sessionDAO.deleteById(cookieOpt.get().getValue());
-//            Cookie cookie = new Cookie("SESSIONID", null);
-//            cookie.setMaxAge(0);
-//            resp.addCookie(cookie);
-//        }
         Cookie sessionCookie = getSessionCookie(req);
         sessionDAO.deleteById(sessionCookie.getValue());
-//        resp.sendRedirect(req.getContextPath() + "/signin");
         Cookie cookie = new Cookie("SESSIONID", null);
         cookie.setMaxAge(0);
         resp.addCookie(cookie);
@@ -88,5 +77,21 @@ public class AuthService {
 
     public boolean sessionExpired(Session session) {
         return LocalDateTime.now().isAfter(session.getExpiresAt());
+    }
+
+//    public User getAuthenticatedUser(HttpServletRequest req) {
+//        Cookie sessionCookie = getSessionCookie(req);
+//        Session session = getSessionById(sessionCookie.getValue());
+//        if (sessionExpired(session)) throw new SessionExpiredException();
+//
+//        return session.getUser();
+//    }
+
+    public Session getAndValidateSession(HttpServletRequest req) {
+        Cookie sessionCookie = getSessionCookie(req);
+        Session session = getSessionById(sessionCookie.getValue());
+        if (sessionExpired(session)) throw new SessionExpiredException();
+
+        return session;
     }
 }

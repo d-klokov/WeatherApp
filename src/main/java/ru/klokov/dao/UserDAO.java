@@ -6,7 +6,7 @@ import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.GenericJDBCException;
 import ru.klokov.exception.DatabaseException;
-import ru.klokov.exception.EntityAlreadyExistsException;
+import ru.klokov.exception.LocationAlreadyExistsException;
 import ru.klokov.model.User;
 import ru.klokov.util.HibernateUtil;
 
@@ -19,7 +19,7 @@ public class UserDAO {
             session.persist(user);
             transaction.commit();
         } catch (ConstraintViolationException e) {
-            throw new EntityAlreadyExistsException("User with login: " + user.getLogin() + " already exists!");
+            throw new LocationAlreadyExistsException("User with login: " + user.getLogin() + " already exists!");
         } catch (GenericJDBCException e) {
             throw new DatabaseException("Database error!");
         }

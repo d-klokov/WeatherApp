@@ -12,7 +12,6 @@ import java.util.List;
 @Data
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-//@JsonDeserialize(using = WeatherApiResponseDeserializer.class)
 public class WeatherApiResponse {
     @JsonProperty("coord")
     private Coordinate coordinate;
@@ -22,6 +21,8 @@ public class WeatherApiResponse {
     private Main main;
     @JsonProperty("wind")
     private Wind wind;
+    @JsonProperty("clouds")
+    private Clouds clouds;
     @JsonProperty("dt")
     private Long dateTime;
     @JsonProperty("name")

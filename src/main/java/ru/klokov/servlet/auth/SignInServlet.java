@@ -2,12 +2,9 @@ package ru.klokov.servlet.auth;
 
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ru.klokov.exception.InvalidParameterException;
 import ru.klokov.model.Session;
 import ru.klokov.service.AuthService;
 import ru.klokov.servlet.BaseServlet;
@@ -26,12 +23,12 @@ public class SignInServlet extends BaseServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         templateEngine.process("signin", webContext, resp.getWriter());
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 

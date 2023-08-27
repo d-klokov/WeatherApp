@@ -5,7 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ru.klokov.exception.InvalidParameterException;
 import ru.klokov.model.Session;
 import ru.klokov.service.AuthService;
 import ru.klokov.servlet.BaseServlet;

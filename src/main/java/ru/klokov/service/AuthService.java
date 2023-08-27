@@ -4,8 +4,6 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import org.thymeleaf.context.WebContext;
 import ru.klokov.dao.SessionDAO;
 import ru.klokov.dao.UserDAO;
 import ru.klokov.exception.*;
@@ -14,10 +12,15 @@ import ru.klokov.model.User;
 import ru.klokov.util.ValidatorUtil;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class AuthService {
     private static final Long SESSION_EXPIRATION_TIME_IN_HOURS = 1L;
@@ -79,19 +82,28 @@ public class AuthService {
         return LocalDateTime.now().isAfter(session.getExpiresAt());
     }
 
-//    public User getAuthenticatedUser(HttpServletRequest req) {
-//        Cookie sessionCookie = getSessionCookie(req);
-//        Session session = getSessionById(sessionCookie.getValue());
-//        if (sessionExpired(session)) throw new SessionExpiredException();
-//
-//        return session.getUser();
-//    }
-
     public Session getAndValidateSession(HttpServletRequest req) {
         Cookie sessionCookie = getSessionCookie(req);
         Session session = getSessionById(sessionCookie.getValue());
         if (sessionExpired(session)) throw new SessionExpiredException();
 
         return session;
+    }
+
+    public void deleteExpiredSessions() {
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
+        ZonedDateTime nextRun = now.withHour(20).withMinute(56).withSecond(0);
+
+        if (now.compareTo(nextRun) > 0)
+            nextRun = nextRun.plusDays(1);
+
+        Duration duration = Duration.between(now, nextRun);
+        long initialDelay = duration.getSeconds();
+
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.scheduleAtFixedRate(sessionDAO::deleteExpiredSessions,
+                initialDelay,
+                TimeUnit.DAYS.toSeconds(1),
+                TimeUnit.SECONDS);
     }
 }

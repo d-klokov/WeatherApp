@@ -6,7 +6,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}" />
     <title>WeatherApp</title>
 </head>
 <body>
@@ -17,13 +16,14 @@
 </section>
 <section>
     <article>
-        <div class="container d-flex flex-column justify-content-evenly align-items-center mt-5">
+        <div class="container d-flex flex-column justify-content-center align-items-center border border-1 bg-light rounded p-3 my-5">
             <div th:replace="fragments/main :: search"></div>
-            <div th:if="${#lists.isEmpty(weatherResponses)}">
+
+            <div class="container mt-3 p-3" th:if="${#lists.isEmpty(weatherResponses)}">
                 <h4 class="text-center">You have not add any location yet</h4>
             </div>
 
-            <div class="container mt-5" th:unless="${#lists.isEmpty(weatherResponses)}">
+            <div class="container mt-3 p-3" th:unless="${#lists.isEmpty(weatherResponses)}">
                 <div class="row g-3 row-cols-xxl-3 row-cols-lg-4 row-cols-md-6 row-cols-sm-1">
                     <div class="col-xxl-3 col-lg-4 col-md-6 col-sm-12" th:each="response : ${weatherResponses}">
                         <div class="card">
@@ -33,7 +33,7 @@
                                         <h3 class="locationName" th:text="${response.locationName}"></h3>
                                         <h6 class="currentTime" th:text="${response.currentTime}"></h6>
                                     </div>
-                                    <form class="d-flex" th:action="@{/delete-location}" method="POST">
+                                    <form class="d-flex" th:action="@{/}" method="POST">
                                         <input type="text" name="locationId" th:value="${response.locationId}" required hidden>
                                         <button class="btn" type="submit">
                                             <i class="h3 my-auto text-white closeIcon bi bi-x-circle-fill"></i>
@@ -41,44 +41,44 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body border-bottom border-start border-end border-2 border-primary rounded-bottom">
                                 <div class="d-flex w-100">
                                     <div class="d-flex flex-column justify-content-between w-50">
-                                        <h1 class="display-3 text-primary temperature" th:text="${response.temperature} + '&deg'"></h1>
-                                        <h6 class="feelsLike my-auto" th:text="'Feels like: ' + ${response.feelsLike} + '&deg'"></h6>
+                                        <h1 class="display-1 fw-bold text-primary" th:text="${response.temperature} + '&deg'"></h1>
+                                        <h6 class="my-auto" th:text="'Feels like: ' + ${response.feelsLike} + '&deg'"></h6>
                                     </div>
                                     <div class="text-center border border-1 bg-primary rounded w-50">
                                         <img class="img-fluid" th:src="@{'https://openweathermap.org/img/wn/' + ${response.icon} + '@2x.png'}" alt="weather icon">
                                     </div>
                                 </div>
-                                <h3 class="text-primary mt-2 description" th:text="${response.description}"></h3>
+                                <h3 class="mt-2" th:text="${response.description}"></h3>
                                 <div class="d-flex w-100">
                                     <div class="d-flex flex-column w-50">
                                         <div class="d-flex align-items-center w-100">
-                                            <div class="w-25 text-center"><i class="h3 iconWind text-primary bi bi-wind"></i></div>
-                                            <div class="h6 wind w-75 text-center my-auto" th:text="${response.windSpeed} + 'm/s, ' + ${response.windDirection}"></div>
+                                            <div class="w-25 text-center"><i class="h3 text-primary bi bi-wind"></i></div>
+                                            <div class="h6 w-75 text-center my-auto" th:text="${response.windSpeed} + 'm/s, ' + ${response.windDirection}"></div>
                                         </div>
                                         <div class="d-flex align-items-center w-100">
-                                            <div class="w-25 text-center"><i class="h3 iconPressure text-primary bi bi-speedometer"></i></div>
-                                            <div class="h6 pressure w-75 text-center my-auto" th:text="${response.pressure} + 'hPa'"></div>
+                                            <div class="w-25 text-center"><i class="h3 text-primary bi bi-speedometer"></i></div>
+                                            <div class="h6 w-75 text-center my-auto" th:text="${response.pressure} + 'hPa'"></div>
                                         </div>
                                         <div class="d-flex align-items-center w-100">
-                                            <div class="w-25 text-center"><i class="h3 iconHumidity text-primary bi bi-droplet-fill"></i></div>
-                                            <div class="h6 humidity w-75 text-center my-auto" th:text="${response.humidity} + '%'"></div>
+                                            <div class="w-25 text-center"><i class="h3 text-primary bi bi-droplet-fill"></i></div>
+                                            <div class="h6 w-75 text-center my-auto" th:text="${response.humidity} + '%'"></div>
                                         </div>
                                     </div>
                                     <div class="d-flex flex-column w-50">
                                         <div class="d-flex align-items-center w-100">
-                                            <div class="w-50 text-center"><i class="h3 iconMinTemperature text-primary bi bi-thermometer-low"></i></div>
-                                            <div class="h6 minTemperature w-50 text-center my-auto" th:text="${response.minTemperature} + '&deg'"></div>
+                                            <div class="w-50 text-center"><i class="h3 text-primary bi bi-thermometer-low"></i></div>
+                                            <div class="h6 w-50 text-center my-auto" th:text="${response.minTemperature} + '&deg'"></div>
                                         </div>
                                         <div class="d-flex align-items-center w-100">
-                                            <div class="w-50 text-center"><i class="h3 iconMaxTemperature text-primary bi bi-thermometer-high"></i></div>
-                                            <div class="h6 maxTemperature w-50 text-center my-auto" th:text="${response.maxTemperature} + '&deg'"></div>
+                                            <div class="w-50 text-center"><i class="h3 text-primary bi bi-thermometer-high"></i></div>
+                                            <div class="h6 w-50 text-center my-auto" th:text="${response.maxTemperature} + '&deg'"></div>
                                         </div>
                                         <div class="d-flex align-items-center w-100">
-                                            <div class="w-50 text-center"><i class="h3 iconCloudiness text-primary bi bi-clouds-fill"></i></div>
-                                            <div class="h6 cloudiness w-50 text-center my-auto" th:text="${response.cloudiness} + '%'"></div>
+                                            <div class="w-50 text-center"><i class="h3 text-primary bi bi-clouds-fill"></i></div>
+                                            <div class="h6 w-50 text-center my-auto" th:text="${response.cloudiness} + '%'"></div>
                                         </div>
                                     </div>
                                 </div>

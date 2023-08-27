@@ -6,7 +6,7 @@ import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.GenericJDBCException;
 import ru.klokov.exception.DatabaseException;
-import ru.klokov.exception.LocationAlreadyExistsException;
+import ru.klokov.exception.EntityAlreadyExistsException;
 import ru.klokov.model.Location;
 import ru.klokov.model.User;
 import ru.klokov.util.HibernateUtil;
@@ -20,7 +20,7 @@ public class LocationDAO {
             session.persist(location);
             transaction.commit();
         } catch (ConstraintViolationException e) {
-            throw new LocationAlreadyExistsException("Location with geographical coordinates: " +
+            throw new EntityAlreadyExistsException("Location with geographical coordinates: " +
                     location.getLatitude() + " " + location.getLongitude() + " already exists!");
         } catch (GenericJDBCException e) {
             throw new DatabaseException("Database error!");

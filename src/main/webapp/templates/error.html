@@ -15,7 +15,10 @@
 </section>
 <section>
     <article>
-        <div class="container"><h1 class="mt-5 text-center" th:text="${message}"></h1></div>
+        <div class="container p-5 my-5 d-flex flex-column justify-content-center align-items-center border border-1 bg-light rounded">
+            <h1 class="text-danger text-center" th:text="${message}"></h1>
+            <a class="btn btn-primary mt-3 w-50" th:href="@{/}">Home</a>
+        </div>
     </article>
 </section>
 </body>

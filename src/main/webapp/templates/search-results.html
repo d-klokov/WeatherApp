@@ -15,26 +15,52 @@
 </section>
 <section>
     <article>
-        <div class="container d-flex flex-column justify-content-evenly align-items-center w-100 h-75">
+        <div class="container p-3 d-flex flex-column justify-content-evenly align-items-center my-5 border border-1 bg-light rounded-3">
             <div th:replace="fragments/main :: search"></div>
-            <div class="d-flex justify-content-evenly align-items-center w-100">
-                <div class="card" style="width: 18%;" th:each="response : ${geoCodingResponses}">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title" th:text="${response.name}"></h5>
-                            <h5 class="card-title" th:text="${response.country}"></h5>
+
+            <div class="mt-3 w-100">
+                <div class="row g-3 row-cols-xxl-2 row-cols-lg-3 row-cols-md-4 row-cols-sm-6">
+                    <div class="col-xxl-2 col-lg-3 col-md-4 col-sm-6" th:each="response : ${geoDataResponses}">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title" th:text="${response.name}"></h5>
+                                    <h5 class="card-title" th:text="${response.country}"></h5>
+                                </div>
+                            </div>
+                            <div class="card-body border-bottom border-start border-end border-1 border-primary rounded-bottom">
+                                <div class="d-flex flex-column justify-content-center align-items-start">
+                                    <p>
+                                        <strong class="card-text fw-bold">Latitude: </strong>
+                                        <span class="card-text" th:text="${response.latitude}"></span>
+                                    </p>
+                                    <p>
+                                        <strong class="card-text fw-bold">Longitude: </strong>
+                                        <span class="card-text" th:text="${response.longitude}"></span>
+                                    </p>
+                                    <form class="w-50 align-self-center" th:action="@{/search}" method="POST">
+                                        <input type="text" name="name" th:value="${response.name}" required hidden>
+                                        <input type="text" name="latitude" th:value="${response.latitude}" required hidden>
+                                        <input type="text" name="longitude" th:value="${response.longitude}" required hidden>
+                                        <input type="text" name="login" th:value="${login}" required hidden>
+                                        <button class="btn btn-primary w-100" type="submit">Add</button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                        <p class="card-text" th:text="'Latitude: ' + ${response.latitude}"></p>
-                        <p class="card-text" th:text="'Longitude: ' + ${response.longitude}"></p>
-                        <form class="d-flex" th:action="@{/add-location}" method="POST">
-                            <input type="text" name="name" th:value="${response.name}" required hidden>
-                            <input type="text" name="latitude" th:value="${response.latitude}" required hidden>
-                            <input type="text" name="longitude" th:value="${response.longitude}" required hidden>
-                            <input type="text" name="login" th:value="${login}" required hidden>
-                            <button class="btn btn-outline-primary" type="submit">Add</button>
-                        </form>
                     </div>
                 </div>
+
+
+<!--                <div class="card" style="width: 18%;" th:each="response : ${geoCodingResponses}">-->
+<!--                    <div class="card-body">-->
+<!--                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">-->
+<!--                            <h5 class="card-title" th:text="${response.name}"></h5>-->
+<!--                            <h5 class="card-title" th:text="${response.country}"></h5>-->
+<!--                        </div>-->
+<!--                        -->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
         </div>
     </article>

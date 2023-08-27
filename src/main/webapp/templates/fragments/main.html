@@ -32,9 +32,9 @@
                 <button type="submit" class="w-50 btn btn-primary">Submit</button>
             </div>
         </form>
-        <form th:fragment="search" class="d-flex" th:action="@{/search}" method="POST">
+        <form th:fragment="search" class="d-flex" th:action="@{/search}" method="GET">
             <input class="form-control me-2" type="text" name="name" placeholder="Location name" aria-label="Search" required>
-            <button class="btn btn-outline-primary" type="submit">Search</button>
+            <button class="btn btn-primary" type="submit">Search</button>
         </form>
     </body>
 </html>

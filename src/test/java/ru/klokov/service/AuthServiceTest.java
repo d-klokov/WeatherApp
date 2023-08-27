@@ -1,16 +1,17 @@
-package ru.klokov.auth;
+package ru.klokov.service;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import ru.klokov.dao.SessionDAO;
 import ru.klokov.dao.UserDAO;
-import ru.klokov.exception.*;
+import ru.klokov.exception.DatabaseException;
+import ru.klokov.exception.EntityAlreadyExistsException;
+import ru.klokov.exception.EntityNotFoundException;
+import ru.klokov.exception.PasswordsNotMatchException;
+import ru.klokov.model.Session;
 import ru.klokov.model.User;
 import ru.klokov.service.AuthService;
 import ru.klokov.util.HibernateUtil;
@@ -21,7 +22,6 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
 public class AuthServiceTest {
     private final UserDAO userDAO;
     private final SessionDAO sessionDAO;
@@ -38,7 +38,7 @@ public class AuthServiceTest {
         String clearUsersHQL = "Delete from User";
         String clearSessionsHQL = "Delete from Session";
 
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (org.hibernate.Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             session.createMutationQuery(clearUsersHQL).executeUpdate();
             session.createMutationQuery(clearSessionsHQL).executeUpdate();
@@ -54,9 +54,9 @@ public class AuthServiceTest {
         String login = "hello@gmail.com";
         String password = "password";
 
-        ru.klokov.model.Session createdSession = authService.signUp(login, password);
+        Session createdSession = authService.signUp(login, password);
         Optional<User> user = userDAO.findByLogin(login);
-        Optional<ru.klokov.model.Session> session = sessionDAO.findById(createdSession.getId());
+        Optional<Session> session = sessionDAO.findById(createdSession.getId());
 
         assertTrue(user.isPresent());
         assertTrue(session.isPresent());
@@ -66,13 +66,13 @@ public class AuthServiceTest {
 
     @Test
     @DisplayName("When sign up with existed login should throw EntityAlreadyExistsException")
-    public void signUpException() {
+    public void signUpEntityAlreadyExistsException() {
         String login = "hello@gmail.com";
         String password = "password";
 
         authService.signUp(login, password);
 
-        assertThrows(LocationAlreadyExistsException.class, () -> authService.signUp(login, password));
+        assertThrows(EntityAlreadyExistsException.class, () -> authService.signUp(login, password));
     }
 
     @Test
@@ -82,8 +82,8 @@ public class AuthServiceTest {
         String password = "password";
 
         authService.signUp(login, password);
-        ru.klokov.model.Session createdSession = authService.signIn(login, password);
-        Optional<ru.klokov.model.Session> session = sessionDAO.findById(createdSession.getId());
+        Session createdSession = authService.signIn(login, password);
+        Optional<Session> session = sessionDAO.findById(createdSession.getId());
 
         assertTrue(session.isPresent());
         assertEquals(session.get().getId(), createdSession.getId());
@@ -112,11 +112,11 @@ public class AuthServiceTest {
 
     @Test
     @DisplayName("When session expires should throw SessionExpiredException")
-    public void  signInSessionExpiredException() {
+    public void sessionExpiredException() {
         String login = "hello@gmail.com";
         String password = "password";
 
-        ru.klokov.model.Session session = new ru.klokov.model.Session(
+        Session session = new Session(
                 UUID.randomUUID().toString(),
                 new User(login, password),
                 LocalDateTime.MIN
@@ -124,4 +124,19 @@ public class AuthServiceTest {
 
         assertTrue(authService.sessionExpired(session));
     }
+
+//    @Test
+//    @DisplayName("When sign out should delete session")
+//    public void signOutSuccess() {
+//        String login = "hello@gmail.com";
+//        String password = "password";
+//
+//        Session session = new Session(
+//                UUID.randomUUID().toString(),
+//                new User(login, password),
+//                LocalDateTime.now().plusHours(1)
+//        );
+//
+//        authService.signOut();
+//    }
 }

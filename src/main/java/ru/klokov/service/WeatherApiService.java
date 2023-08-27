@@ -1,8 +1,6 @@
 package ru.klokov.service;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.thymeleaf.util.StringUtils;
 import ru.klokov.dto.weather.WeatherApiResponse;
@@ -17,25 +15,26 @@ import java.net.http.HttpResponse;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-public class WeatherService {
+public class WeatherApiService {
+    private final HttpClient httpClient;
     private final ObjectMapper mapper;
 
-    public WeatherService(ObjectMapper mapper) {
+    public WeatherApiService(HttpClient httpClient, ObjectMapper mapper) {
+        this.httpClient = httpClient;
         this.mapper = mapper;
     }
 
     public WeatherApiResponse getWeatherDataByLocation(Location location) throws ExecutionException, InterruptedException, JsonProcessingException {
-        HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder().uri(getWeatherApiUri(location)).build();
+        CompletableFuture<HttpResponse<String>> responseFuture = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = responseFuture.get();
 
-        CompletableFuture<String> weatherApiResponseFuture = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body);
+        OpenWeatherMapUtil.checkStatusCode(response.statusCode());
 
-        String weatherApiResponseJson = weatherApiResponseFuture.get();
+        String weatherApiResponseJson = response.body();
 
         return mapper.readValue(weatherApiResponseJson, WeatherApiResponse.class);
     }

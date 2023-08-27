@@ -12,13 +12,15 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.web.IWebExchange;
 import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 import ru.klokov.exception.*;
+import ru.klokov.exception.openweathermap.*;
 import ru.klokov.model.Session;
+import ru.klokov.model.User;
 import ru.klokov.service.AuthService;
 
 import java.io.IOException;
 
 public class BaseServlet extends HttpServlet {
-    private AuthService authService;
+    protected AuthService authService;
     protected ITemplateEngine templateEngine;
     protected WebContext webContext;
 
@@ -41,7 +43,15 @@ public class BaseServlet extends HttpServlet {
                  EntityNotFoundException | PasswordsNotMatchException e) {
             webContext.setVariable("error", e.getMessage());
             templateEngine.process("signin", webContext, resp.getWriter());
-        } catch (LocationAlreadyExistsException | DatabaseException | InvalidParameterException e) {
+        } catch (EntityAlreadyExistsException | DatabaseException | InvalidParameterException |
+                 GeoCodingServiceException | WeatherServiceException | LoadingPropertiesFailedException |
+                 OpenWeatherMapApiBadRequestException | OpenWeatherMapApiInvalidApiKeyException |
+                 OpenWeatherMapApiNotFoundException | OpenWeatherMapApiTooManyRequestsException |
+                 OpenWeatherMapApiInternalErrorException e) {
+            Session session = authService.getAndValidateSession(req);
+            User user = session.getUser();
+
+            webContext.setVariable("login", user.getLogin());
             webContext.setVariable("message", e.getMessage());
             templateEngine.process("error", webContext, resp.getWriter());
         }

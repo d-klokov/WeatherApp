@@ -92,7 +92,7 @@ public class AuthService {
 
     public void deleteExpiredSessions() {
         ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        ZonedDateTime nextRun = now.withHour(20).withMinute(56).withSecond(0);
+        ZonedDateTime nextRun = now.withHour(3).withMinute(0).withSecond(0);
 
         if (now.compareTo(nextRun) > 0)
             nextRun = nextRun.plusDays(1);

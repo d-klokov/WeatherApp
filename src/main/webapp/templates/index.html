@@ -20,7 +20,7 @@
             <div th:replace="fragments/main :: search"></div>
 
             <div class="container mt-3 p-3" th:if="${#lists.isEmpty(weatherResponses)}">
-                <h4 class="text-center">You have not add any location yet</h4>
+                <h4 class="text-center">You have not added any location yet</h4>
             </div>
 
             <div class="container mt-3 p-3" th:unless="${#lists.isEmpty(weatherResponses)}">
@@ -47,7 +47,7 @@
                                         <h1 class="display-1 fw-bold text-primary" th:text="${response.temperature} + '&deg'"></h1>
                                         <h6 class="my-auto" th:text="'Feels like: ' + ${response.feelsLike} + '&deg'"></h6>
                                     </div>
-                                    <div class="text-center border border-1 bg-primary rounded w-50">
+                                    <div class="d-flex justify-content-center text-center border border-1 bg-primary rounded w-50">
                                         <img class="img-fluid" th:src="@{'https://openweathermap.org/img/wn/' + ${response.icon} + '@2x.png'}" alt="weather icon">
                                     </div>
                                 </div>

@@ -14,13 +14,13 @@ import ru.klokov.exception.InvalidParameterException;
 import ru.klokov.model.Location;
 import ru.klokov.model.Session;
 import ru.klokov.model.User;
-import ru.klokov.service.AuthService;
 import ru.klokov.service.GeoCodingApiService;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 @WebServlet("/search")
@@ -38,7 +38,7 @@ public class SearchServlet extends BaseServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Session session = authService.getAndValidateSession(req);
 
         String locationName = req.getParameter("name");
@@ -49,7 +49,7 @@ public class SearchServlet extends BaseServlet {
         List<GeoCodingApiResponse> geoCodingApiResponses;
         try {
             geoCodingApiResponses = geoCodingApiService.getGeoDataByLocationName(locationName);
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
             throw new GeoCodingServiceException(e.getMessage());
         }
 

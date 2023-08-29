@@ -48,15 +48,11 @@ public class SessionDAO {
 
     public void deleteExpiredSessions() {
         String sql = "DELETE FROM sessions WHERE expires_at <= :dateTime";
-//        String hql = "DELETE FROM Session WHERE expires_at <= :(dateTime)";
         Transaction transaction = null;
         try (org.hibernate.Session hibernateSession = HibernateUtil.getSessionFactory().openSession()) {
             transaction = hibernateSession.beginTransaction();
             hibernateSession.createNativeMutationQuery(sql)
                     .setParameter("dateTime", LocalDateTime.now()).executeUpdate();
-//            int x = hibernateSession.createQuery(hql, Integer.class)
-//                    .setParameter("dateTime", LocalDateTime.now()).executeUpdate();
-//            System.out.println(x);
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) transaction.rollback();

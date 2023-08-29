@@ -15,6 +15,8 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class GeoCodingApiService {
     private final HttpClient httpClient;
@@ -25,9 +27,10 @@ public class GeoCodingApiService {
         this.mapper = mapper;
     }
 
-    public List<GeoCodingApiResponse> getGeoDataByLocationName(String name) throws JsonProcessingException, ExecutionException, InterruptedException {
+    public List<GeoCodingApiResponse> getGeoDataByLocationName(String name) throws JsonProcessingException, ExecutionException, InterruptedException, TimeoutException {
         HttpRequest request = HttpRequest.newBuilder().uri(getGeoCodingUri(name)).build();
-        CompletableFuture<HttpResponse<String>> responseFuture = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+        CompletableFuture<HttpResponse<String>> responseFuture = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .orTimeout(1, TimeUnit.MINUTES);
         HttpResponse<String> response = responseFuture.get();
 
         OpenWeatherMapUtil.checkStatusCode(response.statusCode());

@@ -8,11 +8,11 @@ import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import ru.klokov.dao.LocationDAO;
 import ru.klokov.dao.SessionDAO;
+import ru.klokov.dao.UserDAO;
+import ru.klokov.service.AuthService;
 import ru.klokov.service.GeoCodingApiService;
 import ru.klokov.service.WeatherApiService;
 import ru.klokov.util.HibernateUtil;
-import ru.klokov.dao.UserDAO;
-import ru.klokov.service.AuthService;
 
 import java.net.http.HttpClient;
 
@@ -36,23 +36,6 @@ public class ApplicationServletContextListener implements ServletContextListener
         HttpClient httpClient = HttpClient.newHttpClient();
         GeoCodingApiService geoCodingApiService = new GeoCodingApiService(httpClient, mapper);
         WeatherApiService weatherApiService = new WeatherApiService(httpClient, mapper);
-
-//        User user = new User("hello@gmail.com", BCrypt.withDefaults().hashToString(12, "123".toCharArray()));
-//        userDAO.save(user);
-//
-//        sessionDAO.save(new Session(
-//                UUID.randomUUID().toString(),
-//                user,
-//                LocalDateTime.now().plusHours(1)
-//        ));
-//
-//        for (int i = 0; i < 3; i++) {
-//            sessionDAO.save(new Session(
-//                    UUID.randomUUID().toString(),
-//                    user,
-//                    LocalDateTime.now().minusHours(i + 1)
-//            ));
-//        }
 
         context.setAttribute("authService", authService);
         context.setAttribute("mapper", mapper);

@@ -10,7 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "sessions")
+@Table(name = "sessions", indexes = {@Index(name = "expires_at_idx", columnList = "expires_at")})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

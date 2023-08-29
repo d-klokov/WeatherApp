@@ -2,8 +2,6 @@ package ru.klokov.dto.weather;
 
 import lombok.Data;
 
-import java.time.LocalTime;
-
 @Data
 public class WeatherResponse {
     private String locationName;

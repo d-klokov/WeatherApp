@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 @WebServlet("")
@@ -54,7 +55,7 @@ public class IndexServlet extends BaseServlet {
                     WeatherResponse weatherResponse = weatherApiService.getWeatherResponse(weatherApiResponse);
                     weatherResponse.setLocationId(location.getId());
                     return weatherResponse;
-                } catch (ExecutionException | InterruptedException | JsonProcessingException e) {
+                } catch (ExecutionException | InterruptedException | JsonProcessingException | TimeoutException e) {
                     throw new WeatherServiceException(e.getMessage());
                 }
             }).collect(Collectors.toList());

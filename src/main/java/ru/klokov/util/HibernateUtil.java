@@ -6,6 +6,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
+import ru.klokov.exception.DatabaseException;
 import ru.klokov.model.Location;
 import ru.klokov.model.Session;
 import ru.klokov.model.User;
@@ -29,7 +30,7 @@ public class HibernateUtil {
 
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);
             } catch (HibernateException e) {
-                e.printStackTrace();
+                throw new DatabaseException("Database error!");
             }
         }
 
@@ -43,8 +44,8 @@ public class HibernateUtil {
 
         properties.put(Environment.DRIVER, "org.postgresql.Driver");
         properties.put(Environment.URL, "jdbc:postgresql://localhost:5432/weatherappdb");
-        properties.put(Environment.USER, "biboran");
-        properties.put(Environment.PASS, "biboran");
+        properties.put(Environment.USER, "root");
+        properties.put(Environment.PASS, "root");
         properties.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQLDialect");
         properties.put(Environment.HBM2DDL_AUTO, "create-drop");
         properties.put(Environment.SHOW_SQL, "true");

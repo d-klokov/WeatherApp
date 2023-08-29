@@ -17,6 +17,8 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class WeatherApiService {
     private final HttpClient httpClient;
@@ -27,9 +29,10 @@ public class WeatherApiService {
         this.mapper = mapper;
     }
 
-    public WeatherApiResponse getWeatherDataByLocation(Location location) throws ExecutionException, InterruptedException, JsonProcessingException {
+    public WeatherApiResponse getWeatherDataByLocation(Location location) throws ExecutionException, InterruptedException, JsonProcessingException, TimeoutException {
         HttpRequest request = HttpRequest.newBuilder().uri(getWeatherApiUri(location)).build();
-        CompletableFuture<HttpResponse<String>> responseFuture = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+        CompletableFuture<HttpResponse<String>> responseFuture = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .orTimeout(1, TimeUnit.MINUTES);
         HttpResponse<String> response = responseFuture.get();
 
         OpenWeatherMapUtil.checkStatusCode(response.statusCode());

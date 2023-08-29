@@ -17,6 +17,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -39,7 +40,7 @@ public class WeatherApiServiceTest {
 
     @Test
     @DisplayName("When get weather by coordinates successfully should return weather response json")
-    public void getWeatherByLocationNameSuccess() throws ExecutionException, InterruptedException, JsonProcessingException {
+    public void getWeatherByLocationNameSuccess() throws ExecutionException, InterruptedException, JsonProcessingException, TimeoutException {
         String json = "{\"coord\":{\"lon\":37.6175,\"lat\":55.7504}," +
                 "\"weather\":[{\"id\":804,\"main\":\"Clouds\",\"description\":\"overcast clouds\",\"icon\":\"04d\"}]," +
                 "\"base\":\"stations\",\"main\":{\"temp\":18.04,\"feels_like\":17.62,\"temp_min\":16.15," +

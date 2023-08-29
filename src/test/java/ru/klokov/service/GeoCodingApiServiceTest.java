@@ -17,6 +17,7 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,7 +38,7 @@ public class GeoCodingApiServiceTest {
 
     @Test
     @DisplayName("When get geo data by location name successfully should return json response with list of locations")
-    public void getGeoDataByLocationNameSuccess() throws ExecutionException, InterruptedException, JsonProcessingException {
+    public void getGeoDataByLocationNameSuccess() throws ExecutionException, InterruptedException, JsonProcessingException, TimeoutException {
         String json = "[{\"name\":\"Moscow\",\"lat\":55.7504461,\"lon\":37.6174943,\"country\":\"RU\",\"state\":\"Moscow\"}," +
                 "{\"name\":\"Moscow\",\"lat\":46.7323875,\"lon\":-117.0001651,\"country\":\"US\",\"state\":\"Idaho\"}," +
                 "{\"name\":\"Moscow\",\"lat\":45.071096,\"lon\":-69.891586,\"country\":\"US\",\"state\":\"Maine\"}," +

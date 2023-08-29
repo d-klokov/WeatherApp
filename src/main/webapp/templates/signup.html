@@ -20,7 +20,7 @@
           <h3 class="text-center text-primary">Sign Up</h3>
           <h5 class="text-center text-danger" th:if="${error != null}" th:text="${error}"></h5>
           <div th:replace="fragments/main :: auth_form(action=@{/signup})"></div>
-          <div class="text-center">Already have an account? <a th:href="@{/signin}">Sign In</a></div>
+          <div class="text-center mt-2">Already have an account? <a th:href="@{/signin}">Sign In</a></div>
         </div>
       </div>
     </article>

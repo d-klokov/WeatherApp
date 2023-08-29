@@ -46,7 +46,7 @@ public class AuthService {
                 .orElseThrow(() -> new EntityNotFoundException("User with login " + email + " not found!"));
 
         if (ValidatorUtil.passwordsNotMatch(password, user.getPassword()))
-            throw new PasswordsNotMatchException("Authentication failed: password is incorrect!");
+            throw new PasswordsNotMatchException("Authentication failed: wrong login or password!");
 
         return createSession(user);
     }

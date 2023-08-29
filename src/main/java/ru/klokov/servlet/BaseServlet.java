@@ -39,20 +39,22 @@ public class BaseServlet extends HttpServlet {
 
         try {
             super.service(req, resp);
-        } catch (SessionNotFoundException | CookiesNotFoundException | SessionExpiredException |
-                 EntityNotFoundException | PasswordsNotMatchException e) {
+        } catch (EntityAlreadyExistsException e) {
+            webContext.setVariable("error", e.getMessage());
+            templateEngine.process("signup", webContext, resp.getWriter());
+        } catch (SessionNotFoundException | CookiesNotFoundException | SessionExpiredException e) {
+            templateEngine.process("signin", webContext, resp.getWriter());
+        } catch (EntityNotFoundException | PasswordsNotMatchException e) {
             webContext.setVariable("error", e.getMessage());
             templateEngine.process("signin", webContext, resp.getWriter());
-        } catch (EntityAlreadyExistsException | DatabaseException | InvalidParameterException |
-                 GeoCodingServiceException | WeatherServiceException | LoadingPropertiesFailedException |
-                 OpenWeatherMapApiBadRequestException | OpenWeatherMapApiInvalidApiKeyException |
-                 OpenWeatherMapApiNotFoundException | OpenWeatherMapApiTooManyRequestsException |
-                 OpenWeatherMapApiInternalErrorException e) {
+        } catch (DatabaseException | InvalidParameterException | GeoCodingServiceException | WeatherServiceException |
+                 LoadingPropertiesFailedException | OpenWeatherMapApiBadRequestException | OpenWeatherMapApiInvalidApiKeyException |
+                 OpenWeatherMapApiNotFoundException | OpenWeatherMapApiTooManyRequestsException | OpenWeatherMapApiInternalErrorException e) {
             Session session = authService.getAndValidateSession(req);
             User user = session.getUser();
 
             webContext.setVariable("login", user.getLogin());
-            webContext.setVariable("message", e.getMessage());
+            webContext.setVariable("error", e.getMessage());
             templateEngine.process("error", webContext, resp.getWriter());
         }
     }

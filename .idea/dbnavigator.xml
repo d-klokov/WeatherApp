@@ -49,7 +49,7 @@
           <tns-profile value="" />
           <type value="USER_PASSWORD" />
           <user value="biboran" />
-          <deprecated-pwd value="Ymlib3Jhbg==" />
+          <deprecated-pwd value="" />
         </database>
         <properties>
           <auto-commit value="false" />

@@ -26,7 +26,6 @@ public class Location {
     private String name;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
     private Double latitude;
     private Double longitude;

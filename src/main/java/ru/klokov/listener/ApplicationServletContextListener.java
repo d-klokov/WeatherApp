@@ -22,7 +22,7 @@ public class ApplicationServletContextListener implements ServletContextListener
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext context = sce.getServletContext();
 
-        HibernateUtil.getSessionFactory();
+//        HibernateUtil.getSessionFactory();
 
         UserDAO userDAO = new UserDAO();
         SessionDAO sessionDAO = new SessionDAO();

@@ -13,7 +13,6 @@ import ru.klokov.exception.EntityNotFoundException;
 import ru.klokov.exception.PasswordsNotMatchException;
 import ru.klokov.model.Session;
 import ru.klokov.model.User;
-import ru.klokov.service.AuthService;
 import ru.klokov.util.HibernateUtil;
 
 import java.time.LocalDateTime;
@@ -124,19 +123,4 @@ public class AuthServiceTest {
 
         assertTrue(authService.sessionExpired(session));
     }
-
-//    @Test
-//    @DisplayName("When sign out should delete session")
-//    public void signOutSuccess() {
-//        String login = "hello@gmail.com";
-//        String password = "password";
-//
-//        Session session = new Session(
-//                UUID.randomUUID().toString(),
-//                new User(login, password),
-//                LocalDateTime.now().plusHours(1)
-//        );
-//
-//        authService.signOut();
-//    }
 }

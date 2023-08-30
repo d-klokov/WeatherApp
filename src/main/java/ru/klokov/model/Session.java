@@ -19,6 +19,7 @@ public class Session {
     private String id;
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
     @Column(name = "expires_at")
     private LocalDateTime expiresAt;

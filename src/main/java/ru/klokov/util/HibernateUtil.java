@@ -43,7 +43,7 @@ public class HibernateUtil {
         Properties properties = new Properties();
 
         properties.put(Environment.DRIVER, "org.postgresql.Driver");
-        properties.put(Environment.URL, "jdbc:postgresql://localhost:5432/weatherappdb");
+        properties.put(Environment.URL, "jdbc:postgresql://postgres_db:5432/weatherappdb");
         properties.put(Environment.USER, "root");
         properties.put(Environment.PASS, "root");
         properties.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQLDialect");

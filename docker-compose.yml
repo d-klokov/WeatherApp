@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  app:
+    image: 'weatherapp'
+    build:
+      context: .
+    container_name: 'app'
+    depends_on:
+      - postgres_db
+    ports:
+      - "8080:8080"
+
+  postgres_db:
+    image: 'postgres:14.9-alpine'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    container_name: 'postgres_db'
+    environment:
+      - POSTGRES_DB=weatherappdb
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+
+volumes:
+  pgdata:

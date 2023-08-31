@@ -19,6 +19,5 @@ services:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
       - TZ=Europe/Moscow
+      - PGTZ=Europe/Moscow
     restart: always
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"

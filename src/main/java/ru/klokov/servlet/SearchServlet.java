@@ -17,6 +17,8 @@ import ru.klokov.model.User;
 import ru.klokov.service.GeoCodingApiService;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -41,7 +43,7 @@ public class SearchServlet extends BaseServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Session session = authService.getAndValidateSession(req);
 
-        String locationName = req.getParameter("name");
+        String locationName = URLEncoder.encode(req.getParameter("name"), StandardCharsets.UTF_8);
 
         if (locationName == null || locationName.isBlank())
             throw new InvalidParameterException("Location name required!");

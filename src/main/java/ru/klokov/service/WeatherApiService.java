@@ -47,7 +47,6 @@ public class WeatherApiService {
     public WeatherResponse getWeatherResponse(WeatherApiResponse weatherApiResponse) {
         WeatherResponse weatherResponse = new WeatherResponse();
         weatherResponse.setLocationName(weatherApiResponse.getLocationName());
-//        weatherResponse.setCurrentTime(getCurrentTime(weatherApiResponse.getDateTime()));
         weatherResponse.setCurrentTime(LocalTime.now().format(DateTimeFormatter.ofPattern("HH::mm")));
         weatherResponse.setTemperature(Math.round(weatherApiResponse.getMain().getTemperature()));
         weatherResponse.setIcon(weatherApiResponse.getWeather().get(0).getIcon());
@@ -62,16 +61,6 @@ public class WeatherApiService {
         weatherResponse.setCloudiness(weatherApiResponse.getClouds().getAll());
 
         return weatherResponse;
-    }
-
-    private String getCurrentTime(Long dateTime) {
-        LocalTime localTime = LocalTime.ofInstant(Instant.ofEpochSecond(dateTime), ZoneId.systemDefault());
-        int hour = localTime.getHour();
-        int minute = localTime.getMinute();
-
-        String hours = hour < 10 ? "0" + hour : String.valueOf(hour);
-        String minutes = minute < 10 ? "0" + minute : String.valueOf(minute);
-        return hours + ":" + minutes;
     }
 
     private String getWindDirection(Integer deg) {

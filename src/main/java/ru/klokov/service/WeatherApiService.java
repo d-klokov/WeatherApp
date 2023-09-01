@@ -47,7 +47,7 @@ public class WeatherApiService {
     public WeatherResponse getWeatherResponse(WeatherApiResponse weatherApiResponse) {
         WeatherResponse weatherResponse = new WeatherResponse();
         weatherResponse.setLocationName(weatherApiResponse.getLocationName());
-        weatherResponse.setCurrentTime(LocalTime.now().format(DateTimeFormatter.ofPattern("HH::mm")));
+        weatherResponse.setCurrentTime(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
         weatherResponse.setTemperature(Math.round(weatherApiResponse.getMain().getTemperature()));
         weatherResponse.setIcon(weatherApiResponse.getWeather().get(0).getIcon());
         weatherResponse.setDescription(StringUtils.capitalize(weatherApiResponse.getWeather().get(0).getDescription()));

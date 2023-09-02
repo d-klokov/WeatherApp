@@ -21,8 +21,8 @@ public class WeatherApiResponse {
     private Wind wind;
     @JsonProperty("clouds")
     private Clouds clouds;
-    @JsonProperty("dt")
-    private Long dateTime;
+    @JsonProperty("timezone")
+    private Integer timezone;
     @JsonProperty("name")
     private String locationName;
 }

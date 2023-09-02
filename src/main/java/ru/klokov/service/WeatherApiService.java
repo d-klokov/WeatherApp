@@ -15,6 +15,7 @@ import java.net.http.HttpResponse;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.concurrent.CompletableFuture;
@@ -48,7 +49,7 @@ public class WeatherApiService {
         WeatherResponse weatherResponse = new WeatherResponse();
         weatherResponse.setLocationId(location.getId());
         weatherResponse.setLocationName(location.getName());
-        weatherResponse.setCurrentTime(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
+        weatherResponse.setCurrentTime(LocalTime.now(ZoneOffset.ofTotalSeconds(weatherApiResponse.getTimezone())).format(DateTimeFormatter.ofPattern("HH:mm")));
         weatherResponse.setTemperature(Math.round(weatherApiResponse.getMain().getTemperature()));
         weatherResponse.setIcon(weatherApiResponse.getWeather().get(0).getIcon());
         weatherResponse.setDescription(StringUtils.capitalize(weatherApiResponse.getWeather().get(0).getDescription()));

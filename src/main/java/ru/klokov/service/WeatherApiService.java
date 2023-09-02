@@ -44,9 +44,10 @@ public class WeatherApiService {
         return mapper.readValue(weatherApiResponseJson, WeatherApiResponse.class);
     }
 
-    public WeatherResponse getWeatherResponse(WeatherApiResponse weatherApiResponse) {
+    public WeatherResponse getWeatherResponse(Location location, WeatherApiResponse weatherApiResponse) {
         WeatherResponse weatherResponse = new WeatherResponse();
-        weatherResponse.setLocationName(weatherApiResponse.getLocationName());
+        weatherResponse.setLocationId(location.getId());
+        weatherResponse.setLocationName(location.getName());
         weatherResponse.setCurrentTime(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
         weatherResponse.setTemperature(Math.round(weatherApiResponse.getMain().getTemperature()));
         weatherResponse.setIcon(weatherApiResponse.getWeather().get(0).getIcon());

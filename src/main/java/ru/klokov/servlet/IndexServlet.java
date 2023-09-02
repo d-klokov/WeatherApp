@@ -52,9 +52,7 @@ public class IndexServlet extends BaseServlet {
             weatherResponses = locations.stream().map(location -> {
                 try {
                     WeatherApiResponse weatherApiResponse = weatherApiService.getWeatherDataByLocation(location);
-                    WeatherResponse weatherResponse = weatherApiService.getWeatherResponse(weatherApiResponse);
-                    weatherResponse.setLocationId(location.getId());
-                    return weatherResponse;
+                    return weatherApiService.getWeatherResponse(location, weatherApiResponse);
                 } catch (ExecutionException | InterruptedException | JsonProcessingException | TimeoutException e) {
                     throw new WeatherServiceException(e.getMessage());
                 }

@@ -66,7 +66,7 @@ public class IndexServlet extends BaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        authService.getAndValidateSession(req);
+        Session session = authService.getAndValidateSession(req);
 
         String locationIdParameter = req.getParameter("locationId");
 
@@ -79,7 +79,7 @@ public class IndexServlet extends BaseServlet {
             throw new InvalidParameterException("Location id should be a number!");
         }
 
-        locationDAO.deleteById(locationId);
+        if (locationDAO.findById(locationId).getUser().equals(session.getUser())) locationDAO.deleteById(locationId);
 
         resp.sendRedirect(req.getContextPath());
     }

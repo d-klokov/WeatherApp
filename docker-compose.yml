@@ -14,7 +14,7 @@ services:
       - TZ=Europe/Moscow
 
   postgres_db:
-    image: 'postgres:14.9-alpine'
+    image: 'postgres:15.4-alpine'
     container_name: 'postgres_db'
     environment:
       - POSTGRES_DB=weatherappdb
@@ -22,4 +22,12 @@ services:
       - POSTGRES_PASSWORD=root
       - TZ=Europe/Moscow
       - PGTZ=Europe/Moscow
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     restart: always
+
+volumes:
+  pgdata:
+    driver: local

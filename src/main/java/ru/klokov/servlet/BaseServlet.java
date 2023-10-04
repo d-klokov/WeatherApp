@@ -43,7 +43,8 @@ public class BaseServlet extends HttpServlet {
             webContext.setVariable("error", e.getMessage());
             templateEngine.process("signup", webContext, resp.getWriter());
         } catch (SessionNotFoundException | CookiesNotFoundException | SessionExpiredException e) {
-            templateEngine.process("signin", webContext, resp.getWriter());
+//            templateEngine.process("signin", webContext, resp.getWriter());
+            resp.sendRedirect(req.getContextPath() + "/signin");
         } catch (EntityNotFoundException | PasswordsNotMatchException e) {
             webContext.setVariable("error", e.getMessage());
             templateEngine.process("signin", webContext, resp.getWriter());

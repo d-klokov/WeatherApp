@@ -27,6 +27,16 @@ public class LocationDAO {
         }
     }
 
+    public Location findById(Long id) {
+        String hql = "From Location where id = :id";
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(hql, Location.class).setParameter("id", id).getSingleResult();
+        } catch (HibernateException e) {
+            throw new DatabaseException("Database error!\n" + e.getMessage());
+        }
+    }
+
     public List<Location> findByUser(User user) {
         String hql = "From Location where user.id = :user_id";
 

@@ -17,7 +17,7 @@
                 </div>
             </div>
         </nav>
-        <form th:fragment="auth_form" class="w-100 px-3 was-validated" th:action="${action}" method="POST">
+        <form th:fragment="auth_form" class="w-100 px-3 needs-validation" novalidate th:action="${action}" method="POST">
             <div class="w-100 mb-3">
                 <label for="emailInput" class="form-label">Email</label>
                 <input type="email" class="form-control" id="emailInput" name="email" required>
@@ -26,14 +26,14 @@
             <div class="w-100 mb-3">
                 <label for="passwordInput" class="form-label">Password</label>
                 <input type="password" class="form-control" id="passwordInput" name="password" required>
+                <div class="invalid-feedback">Password required.</div>
             </div>
-            <div class="invalid-feedback">Password required.</div>
             <div class="d-flex flex-column justify-content-center align-items-center w-100">
                 <button type="submit" class="w-50 btn btn-primary">Submit</button>
             </div>
         </form>
         <form th:fragment="search" class="d-flex" th:action="@{/search}" method="GET">
-            <input class="form-control me-2" type="text" name="name" placeholder="Location name" aria-label="Search" required>
+            <input class="form-control me-2" type="text" name="name" th:placeholder="${locationName} ?: 'Location name'" aria-label="Search" required>
             <button class="btn btn-primary" type="submit">Search</button>
         </form>
     </body>
